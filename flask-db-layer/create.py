@@ -1,10 +1,9 @@
-from app import db, Users
+from app import db, Games
 
-db.drop_all()
 db.create_all()
 
-testuser = Users(first_name='Grooty',last_name='Toot')
+testgame = Games(game_title='The Last of Us',game_price=39.99)
 # Extra: this section populates the table with an example entry
 
-db.session.add(testuser)
+db.session.add(testgame)
 db.session.commit()
