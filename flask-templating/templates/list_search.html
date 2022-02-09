@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block body %}
+    {% for user in users %}
+        {% if 'b' in user %}
+            <p>{{ user }}</p>
+        {% endif %}
+    {% endfor %}
+{% endblock body %}
