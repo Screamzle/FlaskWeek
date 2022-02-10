@@ -1,31 +1,34 @@
 from application import app, db
 from application.models import ToDo
+from flask import Flask, render_template
+
 
 @app.route('/')
 @app.route('/home')
-@app.route('/view')
 def view_to_do_list():
     incomplete_tasks = ToDo.query.filter_by(completed=False).all()
     tasks_string = ""
-    tasks_id = ""
     for task in incomplete_tasks:
-        tasks_string += str(task.id) + " " + task.task_description + "<br>"
-    return f'Incomplete tasks are as follows:<br><br>{tasks_string}{tasks_id}'
+        tasks_string += str(task.id) + " " + task.task_description + "\n"
+    return render_template('completed.html', tasks=tasks_string)
+
 
 @app.route('/completed')
 def view_completed_tasks():
     complete_tasks = ToDo.query.filter_by(completed=True).all()
-    tasks_string = ""
+    completed_tasks_string = ""
     for task in complete_tasks:
-        tasks_string += str(task.id) + " " + task.task_description + "<br>"
-    return f'Completed tasks are as follows:<br><br>{tasks_string}'
+        completed_tasks_string += str(task.id) + " " + task.task_description + "\n"
+    return render_template('incomplete.html', tasks=completed_tasks_string)
 
-@app.route('/add/<newtask>')
-def add_task(newtask):
-    new_todo = ToDo(task_description=newtask)
+
+@app.route('/add/<new_task>')
+def add_task(new_task):
+    new_todo = ToDo(task_description=new_task)
     db.session.add(new_todo)
     db.session.commit()
-    return f'Added "{newtask}" to To Do List'
+    return f'Added "{new_task}" to To Do List'
+
 
 @app.route('/update/<description>')
 def update_task(description):
@@ -34,12 +37,14 @@ def update_task(description):
     db.session.commit()
     return f'Task has been updated to "{update_item.task_description}"'
 
-@app.route('/delete')
-def delete_task():
-    task_to_delete = ToDo.query.get(1)
+
+@app.route('/delete/<int:delete>')
+def delete_task(delete):
+    task_to_delete = ToDo.query.get(delete)
     db.session.delete(task_to_delete)
     db.session.commit()
     return "Deleted task from To Do List"
+
 
 @app.route('/complete/<int:complete>')
 def complete_task(complete):
@@ -47,6 +52,7 @@ def complete_task(complete):
     task_to_complete.completed = True
     db.session.commit()
     return f'Task {complete} has been completed'
+
 
 @app.route('/resume/<int:resume>')
 def resume_task(resume):
