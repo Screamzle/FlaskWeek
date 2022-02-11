@@ -1,4 +1,9 @@
 {% extends 'hyperlinks.html' %}
 {% block body %}
-{{ tasks }}
+<br>
+    <h3>
+        Incomplete Tasks:
+    </h3>
+<br>
+{{ tasks|safe }}
 {% endblock body %}
