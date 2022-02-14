@@ -1,9 +1,16 @@
 from app import db, Games
 
-db.create_all()
+col = db.Column('game_description', String(100), nullable=False, default='none')
+col.create(Games, populate_default=True)
 
-testgame = Games(game_title='The Last of Us',game_price=39.99)
+# Column is added to table based on its name
+assert col is Games.c.col1
+
+# col1 is populated with 'foobar' because of `populate_default`
+
+
+# test_game = Games(game_title='The Last of Us',game_price=39.99)
 # Extra: this section populates the table with an example entry
 
-db.session.add(testgame)
-db.session.commit()
+# db.session.add(test_game)
+# db.session.commit()

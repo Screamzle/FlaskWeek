@@ -6,11 +6,12 @@ from application.html_forms import AddForm
 
 @app.route('/')
 @app.route('/home')
+@app.route('/incomplete')
 def view_to_do_list():
     incomplete_tasks = ToDo.query.filter_by(completed=False).all()
     tasks_list = '<ul>'
     for task in incomplete_tasks:
-        tasks_list += '<li>' + str(task.id) + " " + task.task_description + "</li>"
+        tasks_list += '<li>' + str(task.id) + " - " + task.task_description + "</li>"
     tasks_list += '<ul>'
     return render_template('incomplete.html', tasks=tasks_list)
 
@@ -20,7 +21,7 @@ def view_completed_tasks():
     complete_tasks = ToDo.query.filter_by(completed=True).all()
     completed_tasks_string = ""
     for task in complete_tasks:
-        completed_tasks_string += '<li>' + str(task.id) + " " + task.task_description + "</li>"
+        completed_tasks_string += '<li>' + str(task.id) + " - " + task.task_description + "</li>"
     return render_template('completed.html', tasks=completed_tasks_string)
 
 

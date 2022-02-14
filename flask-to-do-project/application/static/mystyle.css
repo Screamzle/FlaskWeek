@@ -8,7 +8,7 @@ body {
  * Formatting the header area
  */
 header {
-  background-color: #DFB887;
+  background-color: #ADD8E6;
   height: 35px;
   width: 100%;
   opacity: .9;
@@ -33,13 +33,6 @@ header h1.logo:hover {
   margin: 0 auto;
 }
 div.home {
-  padding: 10px 0 30px 0;
-  background-color: #E6E6FA;
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
-}
-div.about {
   padding: 10px 0 30px 0;
   background-color: #E6E6FA;
   -webkit-border-radius: 6px;
