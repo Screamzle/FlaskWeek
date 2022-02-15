@@ -1,0 +1,26 @@
+{% extends 'hyperlinks.html' %}
+{% block body %}
+<html>
+    <head>
+        <title>Update List Item</title>
+    </head>
+    <body>
+        <div class='form'>
+            <form method='POST' action=''>
+                <br>
+                <br>
+                <br>
+                {{ form.hidden_tag() }}
+                {{ form.task_id.label }} {{ form.task_id }}
+                <br>
+                {{ form.task_description.label }} {{ form.task_description }}
+                <br>
+                <!-- form.submit is a button -->
+                {{ form.submit }}
+                <br>
+            {{ message }}
+            </form>
+        </div>
+    </body>
+</html>
+{% endblock body %}

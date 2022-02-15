@@ -14,15 +14,15 @@ class UpdateForm(FlaskForm):
 
 
 class DeleteForm(FlaskForm):
-    task_id = IntegerField('Enter To Do list item number')
+    task_id = IntegerField('Enter number of item to delete')
     submit = SubmitField('Delete Item')
 
 
 class CompleteForm(FlaskForm):
     task_id = IntegerField('Enter To Do list item number')
-    status = SelectField('Choose whether to complete or resume task', choices=[
-        ('True', 'Completed'),
-        ('False', 'Resume')
+    status = SelectField('Set Task to complete/incomplete', choices=[
+        ('True', 'Complete'),
+        ('False', 'Incomplete')
     ])
-    submit = SubmitField('Complete Item')
+    submit = SubmitField('Submit Changes')
 

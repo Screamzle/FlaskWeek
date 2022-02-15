@@ -1,7 +1,7 @@
 from application import app, db
 from application.models import ToDo
 from flask import Flask, render_template, request
-from application.html_forms import AddForm
+from application.html_forms import AddForm, UpdateForm, DeleteForm, CompleteForm
 
 
 @app.route('/')
@@ -19,10 +19,11 @@ def view_to_do_list():
 @app.route('/completed')
 def view_completed_tasks():
     complete_tasks = ToDo.query.filter_by(completed=True).all()
-    completed_tasks_string = ""
+    completed_tasks_list = '<ul>'
     for task in complete_tasks:
-        completed_tasks_string += '<li>' + str(task.id) + " - " + task.task_description + "</li>"
-    return render_template('completed.html', tasks=completed_tasks_string)
+        completed_tasks_list += '<li>' + str(task.id) + " - " + task.task_description + "</li>"
+    completed_tasks_list += '<ul>'
+    return render_template('completed.html', tasks=completed_tasks_list)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -34,7 +35,7 @@ def add_task():
         task_description = form.task_description.data
 
         if len(task_description) == 0:
-            message = "Please enter your a to do list item"
+            message = "Please enter your to do list item"
         else:
             record = ToDo(task_description)
             db.session.add(record)
@@ -44,20 +45,43 @@ def add_task():
     return render_template('add.html', form=form, message=message)
 
 
-@app.route('/update/<description>')
-def update_task(description):
-    update_item = ToDo.query.get(1)
-    update_item.task_description = description
-    db.session.commit()
-    return f'Task has been updated to "{update_item.task_description}"'
+@app.route('/update/', methods=['GET', 'POST'])
+def update_task():
+    message = ""
+    form = UpdateForm()
+
+    if request.method == 'POST':
+        task_id = form.task_id.data
+        task_description = form.task_description.data
+
+        if len(task_description) == 0:
+            message = "Please enter your to do list item"
+        else:
+            update_item = ToDo.query.get(task_id)
+            update_item.task_description = task_description
+            db.session.commit()
+            message = f'Thank you, task "{task_id}" has been updated to "{task_description}"'
+
+    return render_template('update.html', form=form, message=message)
 
 
-@app.route('/delete/<int:delete>')
-def delete_task(delete):
-    task_to_delete = ToDo.query.get(delete)
-    db.session.delete(task_to_delete)
-    db.session.commit()
-    return "Deleted task from To Do List"
+@app.route('/delete', methods=['GET', 'POST'])
+def delete_task():
+    message = ""
+    form = DeleteForm()
+
+    if request.method == 'POST':
+        task_id = form.task_id.data
+
+        if task_id is None:
+            message = "Please enter number of item to delete"
+        else:
+            delete_item = ToDo.query.get(task_id)
+            db.session.delete(delete_item)
+            db.session.commit()
+            message = f'Thank you, task "{task_id}" has been deleted'
+
+    return render_template('delete.html', form=form, message=message)
 
 
 @app.route('/complete/<int:complete>')
