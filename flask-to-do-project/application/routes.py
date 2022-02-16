@@ -84,12 +84,24 @@ def delete_task():
     return render_template('delete.html', form=form, message=message)
 
 
-@app.route('/complete/<int:complete>')
-def complete_task(complete):
-    task_to_complete = ToDo.query.get(complete)
-    task_to_complete.completed = True
-    db.session.commit()
-    return f'Task {complete} has been completed'
+@app.route('/status', methods=['GET', 'POST'])
+def complete_task():
+    message = ""
+    form = CompleteForm()
+
+    if request.method == 'POST':
+        task_id = form.task_id.data
+        status = form.status.data
+    
+        if task_id is None:
+            message = "Please enter number of item to complete/resume"
+        else:
+            complete_item = ToDo.query.get(task_id)
+            complete_item.completed = bool(status)
+            db.session.commit()
+            message = f'Thank you, the status of task "{task_id}" has been changed'
+
+    return render_template('status.html', form=form, message=message)
 
 
 @app.route('/resume/<int:resume>')

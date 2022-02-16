@@ -22,7 +22,8 @@ class CompleteForm(FlaskForm):
     task_id = IntegerField('Enter To Do list item number')
     status = SelectField('Set Task to complete/incomplete', choices=[
         ('True', 'Complete'),
-        ('False', 'Incomplete')
-    ])
+        ('False', 'Incomplete')],
+        coerce=lambda x: x == 'True'
+    )
     submit = SubmitField('Submit Changes')
 
