@@ -23,7 +23,7 @@ class CompleteForm(FlaskForm):
     status = SelectField('Set Task to complete/incomplete', choices=[
         ('True', 'Complete'),
         ('False', 'Incomplete')],
-        coerce=lambda x: x == 'True'
+        coerce=lambda x: x == 'True'-
     )
     submit = SubmitField('Submit Changes')
 
